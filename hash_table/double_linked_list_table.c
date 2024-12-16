@@ -4,14 +4,12 @@
 
 typedef struct CasillaHash {
     void *dato;
-    int eliminado;
 } CasillaHash;
 
 struct _TablaHash {
     CasillaHash *elems;
     unsigned numElems;
     unsigned capacidad;
-    TablaHashCrear tablahash_crear;
     TablaHashBuscar tablahash_buscar;
     TablaHashDestruir tablahash_destruir;
     TablaHashEliminar tablahash_eliminar;
@@ -22,6 +20,24 @@ struct _TablaHash {
     FuncionDestructora destr;
     FuncionHash hash;
 };
+
+void *tablahash_buscar(TablaHash tabla, void *dato) {}
+
+void tablahash_destruir(TablaHash tabla) {}
+
+void tablahash_eliminar(TablaHash tabla, void *dato) {}
+
+void tablahash_insertar(TablaHash tabla, void *dato) {
+
+    unsigned idx = tabla->hash(dato) % tabla->capacidad;
+
+    if (tabla->elems[idx].dato == NULL) {
+        //crear lista en esa posicion
+    }
+
+}
+
+void tablahash_imprimir(TablaHash tabla) {}
 
 TablaHash createDoubleLinkedListHashTable(
     unsigned capacidad,
@@ -40,4 +56,9 @@ TablaHash createDoubleLinkedListHashTable(
         tabla->copia = copia;
         tabla->destr = destr;
         tabla->hash = hash;
+        tabla->tablahash_buscar = tablahash_buscar;
+
+        for (int i = 0; i < capacidad; i++) {
+            tabla->elems[i].dato = NULL;
+        }
 }

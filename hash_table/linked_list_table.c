@@ -3,25 +3,6 @@
 #include<stdlib.h>
 #include "../lists/linked_list.h"
 
-typedef struct CasillaHash {
-    void *dato;
-} CasillaHash;
-
-struct _TablaHash {
-    CasillaHash *elems;
-    unsigned numElems;
-    unsigned capacidad;
-    TablaHashBuscar tablahash_buscar;
-    TablaHashDestruir tablahash_destruir;
-    TablaHashEliminar tablahash_eliminar;
-    TablaHashInsertar tablahash_insertar;
-    TablaHashImprimir tablahash_imprimir;
-    FuncionCopiadora copia;
-    FuncionComparadora comp;
-    FuncionDestructora destr;
-    FuncionHash hash;
-};
-
 void *tablahash_buscar(TablaHash tabla, void *dato) {}
 
 void tablahash_destruir(TablaHash tabla) {}
@@ -68,8 +49,9 @@ TablaHash createDoubleLinkedListHashTable(
         tabla->tablahash_insertar = tablahash_insertar;
         tabla->tablahash_imprimir = tablahash_imprimir;
 
-
         for (int i = 0; i < capacidad; i++) {
             tabla->elems[i].dato = NULL;
         }
+
+        return tabla;
 }

@@ -14,9 +14,9 @@ TablaHash nueva_tabla(
     ) {
 
         if (strcmp(implementacion, "linked_list") == 0) {
-            createDoubleLinkedListHashTable(capacidad, copia, comp, destr, hash);
+            return createDoubleLinkedListHashTable(capacidad, copia, comp, destr, hash);
         } else if (strcmp(implementacion, "avl_tree") == 0) {
-
+            return NULL;
         } else {
             printf("Implementacion no valida\n");
             return NULL;

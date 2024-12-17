@@ -1,23 +1,31 @@
-typedef struct _TablaHash *TablaHash;
+#ifndef HASH_TABLE_H
+#define HASH_TABLE_H 
 
 typedef void *(*FuncionCopiadora)(void *dato);
 typedef int (*FuncionComparadora)(void *dato1, void *dato2);
 typedef void (*FuncionDestructora)(void *dato);
 typedef unsigned (*FuncionHash)(void *dato);
 
-typedef TablaHash (*TablaHashCrear)(
-    unsigned capacidad,
-    FuncionCopiadora copia,
-    FuncionComparadora comp,
-    FuncionDestructora destr,
-    FuncionHash hash
-    );
+typedef struct CasillaHash {
+    void *dato;
+} CasillaHash;
 
-typedef void (*TablaHashDestruir)(TablaHash tabla);
-typedef void (*TablaHashInsertar)(TablaHash tabla, void *dato);
-typedef void *(*TablaHashBuscar)(TablaHash tabla, void *dato);
-typedef void (*TablaHashEliminar)(TablaHash tabla, void *dato);
-typedef void (*TablaHashImprimir)(TablaHash tabla);
+typedef struct _TablaHash {
+    CasillaHash *elems;
+    unsigned numElems;
+    unsigned capacidad;
+    void *(*tablahash_buscar)(struct _TablaHash *tabla, void *dato);
+    void (*tablahash_destruir)(struct _TablaHash *tabla);
+    void (*tablahash_eliminar)(struct _TablaHash *tabla, void *dato);
+    void (*tablahash_insertar)(struct _TablaHash *tabla, void *dato);
+    void (*tablahash_imprimir)(struct _TablaHash *tabla);
+    FuncionCopiadora copia;
+    FuncionComparadora comp;
+    FuncionDestructora destr;
+    FuncionHash hash;
+} _TablaHash;
+
+typedef struct _TablaHash *TablaHash;
 
 TablaHash nueva_tabla(
     unsigned capacidad,
@@ -28,3 +36,4 @@ TablaHash nueva_tabla(
     FuncionHash hash
 );
 
+#endif

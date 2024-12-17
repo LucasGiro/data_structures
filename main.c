@@ -20,9 +20,9 @@ void destr(void *dato) {
     free((double*)dato);
 }
 
-int hash(void *dato) {
+unsigned hash(void *dato) {
 
-    int truncado = *(double*)dato;
+    unsigned truncado = *(double*)dato;
 
     if ((*(double*)dato - .5) >= truncado) return truncado + 1;
 
@@ -32,10 +32,14 @@ int hash(void *dato) {
 
 int main() {
 
-    //TablaHash tabla = nueva_tabla(10, "linked_list", copia, comp, destr, hash);
+    TablaHash tabla = nueva_tabla(10, "linked_list", copia, comp, destr, hash);
 
     double *n = malloc(sizeof(double));
     *n = 0.5;
+
+    tabla->tablahash_insertar(tabla, n);
+
+    tabla->tablahash_destruir(tabla);
 
     free(n);
 

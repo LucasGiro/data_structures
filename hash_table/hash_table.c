@@ -10,11 +10,12 @@ TablaHash nueva_tabla(
     FuncionCopiadora copia,
     FuncionComparadora comp, 
     FuncionDestructora destr,
+    FuncionVisitante visit,
     FuncionHash hash
     ) {
 
         if (strcmp(implementacion, "linked_list") == 0) {
-            return createDoubleLinkedListHashTable(capacidad, copia, comp, destr, hash);
+            return createDoubleLinkedListHashTable(capacidad, copia, comp, destr, visit, hash);
         } else if (strcmp(implementacion, "avl_tree") == 0) {
             return NULL;
         } else {

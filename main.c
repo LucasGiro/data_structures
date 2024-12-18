@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include "hash_table/hash_table.h"
+#include "lists/linked_list.h"
 
 void *copia(void *n) {
     double *m = malloc(sizeof(double));
@@ -30,18 +31,23 @@ unsigned hash(void *dato) {
 
 }
 
+void visitante(void *dato) {
+    printf("%f", *(double*)dato);
+}
+
 int main() {
 
-    TablaHash tabla = nueva_tabla(10, "linked_list", copia, comp, destr, hash);
+    TablaHash tabla = nueva_tabla(10, "linked_list", copia, comp, destr, visitante, hash);
 
-    double *n = malloc(sizeof(double));
-    *n = 0.5;
+    double data[] = { 2.2, 0.6, 2.9, 0.8, 0.1, 66.7, 1051.45, 1793.4, 17.6, 470.45, 5.6, 4.4, 20.6, 19.3, 14.2 };
 
-    tabla->tablahash_insertar(tabla, n);
+    for (int i = 0; i < 15; i++) {
+        tabla->tablahash_insertar(&tabla, &data[i]);
+    }
+
+    tabla->tablahash_imprimir(tabla);
 
     tabla->tablahash_destruir(tabla);
-
-    free(n);
 
     return 0;
 }

@@ -2,6 +2,8 @@
 #include<stdlib.h>
 #include "hash_table/hash_table.h"
 #include "lists/linked_list.h"
+#include "trees/avl_tree.h"
+#include "queue/queue.h"
 
 void *copia(void *n) {
     double *m = malloc(sizeof(double));
@@ -32,22 +34,18 @@ unsigned hash(void *dato) {
 }
 
 void visitante(void *dato) {
-    printf("%f", *(double*)dato);
+    printf("%f\n", *(double*)dato);
 }
 
 int main() {
 
-    TablaHash tabla = nueva_tabla(10, "linked_list", copia, comp, destr, visitante, hash);
-
     double data[] = { 2.2, 0.6, 2.9, 0.8, 0.1, 66.7, 1051.45, 1793.4, 17.6, 470.45, 5.6, 4.4, 20.6, 19.3, 14.2 };
 
-    for (int i = 0; i < 15; i++) {
-        tabla->tablahash_insertar(&tabla, &data[i]);
-    }
+    AVL_TREE t = new_avl_tree();
 
-    tabla->tablahash_imprimir(tabla);
+    for (int i = 0; i < 15; i++) avl_tree_insert(&t, &data[i], copia, comp);
 
-    tabla->tablahash_destruir(tabla);
+    avl_tree_bfs(t, visitante);
 
     return 0;
 }

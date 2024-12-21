@@ -15,3 +15,4 @@ void enqueue(Queue queue, void *dato);
 void *dequeue(Queue queue);
 int queue_isEmpty(Queue queue);
 void queue_imprimir(Queue queue, FuncionVisitante visit);
+void queue_destroy(Queue queue, FuncionDestructora destr);

@@ -41,11 +41,17 @@ int main() {
 
     double data[] = { 2.2, 0.6, 2.9, 0.8, 0.1, 66.7, 1051.45, 1793.4, 17.6, 470.45, 5.6, 4.4, 20.6, 19.3, 14.2 };
 
-    AVL_TREE t = new_avl_tree();
+    AVL t = new_avl_tree(comp, copia, destr, visitante);
 
-    for (int i = 0; i < 15; i++) avl_tree_insert(&t, &data[i], copia, comp);
+    for (int i = 0; i < 15; i++) {
+        avl_tree_insert(t, &data[i], copia, comp);
+    }
 
     avl_tree_bfs(t, visitante);
+
+    avl_tree_destroy(t->raiz, destr);
+
+    free(t);
 
     return 0;
 }

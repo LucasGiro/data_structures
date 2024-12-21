@@ -47,3 +47,10 @@ void queue_imprimir(Queue queue, FuncionVisitante visit) {
     if (queue == NULL) return;
     slist_imprimir(queue->first, visit);
 }
+
+void queue_destroy(Queue queue, FuncionDestructora destr) {
+
+    slist_destroy(queue->first, destr); // No se ejecuta si la lista es vacia
+    free(queue);
+
+}

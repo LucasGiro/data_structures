@@ -49,6 +49,11 @@ int main() {
 
     avl_tree_bfs(t, visitante);
 
+    avl_tree_delete(t, &data[5]);
+    avl_tree_delete(t, &data[7]);
+
+    avl_tree_bfs(t, visitante);
+
     avl_tree_destroy(t->raiz, destr);
 
     free(t);

@@ -28,3 +28,4 @@ void avl_tree_inorder(AVL_NODE *t, FuncionVisitante visit);
 void avl_tree_postorder(AVL_NODE *t, FuncionVisitante visit);
 void avl_tree_bfs(AVL t, FuncionVisitante visit);
 void avl_tree_destroy(AVL_NODE *t, FuncionDestructora destr);
+void avl_tree_delete(AVL t, void *dato);

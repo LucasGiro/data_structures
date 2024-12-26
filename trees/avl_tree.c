@@ -199,3 +199,133 @@ void avl_tree_destroy(AVL_NODE *t, FuncionDestructora destr) {
     free(t);
 
 }
+
+AVL_NODE *minimo_nodo_arbol(AVL_NODE *t) {
+
+    if (t == NULL) return NULL;
+
+    if (t->izq == NULL) return t;
+
+    return minimo_nodo_arbol(t->izq);
+
+}
+
+AVL_NODE *avl_node_delete(AVL_NODE *t, void *dato, FuncionComparadora comp, FuncionDestructora destr, FuncionCopiadora copia) {
+
+    if (t == NULL) return NULL;
+
+    if (comp(t->dato, dato) < 0) {
+
+        t->der = avl_node_delete(t->der, dato, comp, destr, copia);
+
+        int fact_b = avl_tree_factor_balance(t);
+
+        if (fact_b == -2) {
+
+            if (avl_tree_factor_balance(t->izq) == 1) {
+                // hacer rotacion doble
+                AVL_NODE *temp = t->izq->der;
+                t->izq->der = temp->izq;
+                temp->izq = t->izq;
+                t->izq = temp;
+                temp->izq->altura = avl_node_altura(temp->izq);
+                temp->altura = avl_node_altura(temp);
+                temp = t->izq;
+                t->izq = temp->der;
+                temp->der = t;
+                t = temp;
+                t->der->altura = avl_node_altura(t->der);
+            } else {
+                // hacer rotacion simple
+                AVL_NODE *temp = t->izq;
+                t->izq = temp->der;
+                temp->der = t;
+                t = temp;
+                t->der->altura = avl_node_altura(t->der);
+            }
+
+        }
+
+        t->altura = avl_node_altura(t);
+
+        return t;
+
+    } else if(comp(t->dato, dato) > 0) {
+
+        t->izq = avl_node_delete(t->izq, dato, comp, destr, copia);
+
+        int fact_b = avl_tree_factor_balance(t);
+
+        if (fact_b == 2) {
+
+            if (avl_tree_factor_balance(t->der) == 1) {
+                //hacer la rotacion simple
+                AVL_NODE *temp = t->der;
+                t->der = temp->izq;
+                temp->izq = t;
+                t = temp;
+                t->izq->altura = avl_node_altura(t->izq);
+            } else {
+                // hacer rotacion doble
+                AVL_NODE *temp = t->der->izq;
+                t->der->izq = temp->der;
+                temp->der = t->der;
+                t->der = temp;
+                t->der->altura = avl_node_altura(t->der);
+                t->der->der->altura = avl_node_altura(t->der->der);
+                temp = t->der;
+                t->der = temp->izq;
+                temp->izq = t;
+                t = temp;
+                t->izq->altura = avl_node_altura(t->izq);
+            }
+
+        }
+
+        t->altura = avl_node_altura(t);
+
+        return t;
+
+    }
+
+    if (t->izq == NULL && t->der == NULL) {
+
+        destr(t->dato);
+        free(t);
+        return NULL;
+
+    }
+
+    if (t->izq == NULL && t->der != NULL) {
+
+        AVL_NODE *temp = t->der;
+        destr(t->dato);
+        free(t);
+        return temp;
+
+    }
+
+    if (t->izq != NULL && t->der == NULL) {
+
+        AVL_NODE *temp = t->izq;
+        destr(t->dato);
+        free(t);
+        return temp;
+
+    }
+
+    AVL_NODE *temp = minimo_nodo_arbol(t->der);
+    AVL_NODE *node = avl_node_create(temp->dato, copia);
+    node->izq = t->izq;
+    node->der = avl_node_delete(t->der, temp->dato, comp, destr, copia);
+    destr(t->dato);
+    free(t);
+    return node;
+
+}
+
+void avl_tree_delete(AVL t, void *dato) {
+
+    t->raiz = avl_node_delete(t->raiz, dato, t->comp, t->destr, t->copia);
+
+}

@@ -29,3 +29,8 @@ void avl_tree_postorder(AVL_NODE *t, FuncionVisitante visit);
 void avl_tree_bfs(AVL t, FuncionVisitante visit);
 void avl_tree_destroy(AVL_NODE *t, FuncionDestructora destr);
 void avl_tree_delete(AVL t, void *dato);
+int avl_tree_nnodes(AVL_NODE *root);
+int avl_tree_search(AVL t, void *dato);
+AVL avl_tree_copy(AVL t);
+int avl_nnodos_profundidad(AVL_NODE *t, int k);
+int avl_tree_profundidad(AVL t, void *dato);

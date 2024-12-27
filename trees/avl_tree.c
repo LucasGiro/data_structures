@@ -329,3 +329,100 @@ void avl_tree_delete(AVL t, void *dato) {
     t->raiz = avl_node_delete(t->raiz, dato, t->comp, t->destr, t->copia);
 
 }
+
+int avl_tree_nnodes(AVL_NODE *root) {
+
+    if (root == NULL) return 0;
+
+    int nnodes = 0;
+
+    nnodes += avl_tree_nnodes(root->izq);
+    nnodes += avl_tree_nnodes(root->der);
+
+    return nnodes + 1;
+
+}
+
+int avl_node_search(AVL_NODE *t, void *dato, FuncionComparadora comp) {
+
+    if (t == NULL) return 0;
+
+    if (comp(t->dato, dato) == 0) return 1;
+
+    if (comp(t->dato, dato) < 0) return avl_node_search(t->der, dato, comp);
+
+    return avl_node_search(t->izq, dato, comp);
+
+}
+
+int avl_tree_search(AVL t, void *dato) {
+    return avl_node_search(t->raiz, dato, t->comp);
+}
+
+//btree copiar: que retorne un nuevo árbol que sea una copia del árbol dado.
+
+AVL_NODE *avl_node_copy(AVL_NODE *node, FuncionCopiadora copia) {
+
+    if (node == NULL) return NULL;
+
+    AVL_NODE *new_node = avl_node_create(node->dato, copia);
+    new_node->izq = avl_node_copy(node->izq, copia);
+    new_node->der = avl_node_copy(node->der, copia);
+
+    return new_node;
+
+}
+
+AVL avl_tree_copy(AVL t) {
+
+    if (t == NULL) return NULL;
+
+    AVL new_tree = new_avl_tree(t->comp, t->copia, t->destr, t->visit);
+    new_tree->raiz = avl_node_copy(t->raiz, t->copia);
+    return new_tree;
+}
+
+int avl_nnodos_profundidad(AVL_NODE *t, int k) {
+
+    if (t == NULL) return 0;
+
+    if (k == 0) return 1;
+
+    return avl_nnodos_profundidad(t->izq, k-1) + avl_nnodos_profundidad(t->der, k-1);
+
+}
+
+/*btree profundidad: retorna la profundidad del nodo que contiene el dato dado, y -1 si el
+dato no se encuentra en el árbol.*/
+
+int avl_node_profundidad(AVL_NODE *t, void *dato, FuncionComparadora comp) {
+
+    if (t == NULL) return -1;
+
+    if (comp(dato, t->dato) == 0) return 0;
+
+    if (comp(dato, t->dato) < 0) {
+
+        int p = avl_node_profundidad(t->izq, dato, comp);
+
+        if (p == -1) return p;
+
+        return 1 + p;
+
+    }
+
+    if (comp(dato, t->dato) > 0) {
+
+        int p = avl_node_profundidad(t->der, dato, comp);
+
+        if (p == -1) return p;
+
+        return 1 + p;
+
+    }
+
+}
+
+int avl_tree_profundidad(AVL t, void *dato) {
+    return avl_node_profundidad(t->raiz, dato, t->comp);
+}

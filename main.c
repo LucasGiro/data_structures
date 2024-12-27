@@ -5,6 +5,8 @@
 #include "trees/avl_tree.h"
 #include "queue/queue.h"
 
+//gcc trees/avl_tree.c queue/queue.c lists/linked_list.c hash_table/hash_table.c hash_table/avl_tree_table.c hash_table/linked_list_table.c main.c -o main
+
 void *copia(void *n) {
     double *m = malloc(sizeof(double));
     *m = *(double*)n;
@@ -46,17 +48,17 @@ int main() {
     for (int i = 0; i < 15; i++) {
         avl_tree_insert(t, &data[i], copia, comp);
     }
-
-    avl_tree_bfs(t, visitante);
-
+    printf("profundidad del nodo 14.2: %d\n", avl_tree_profundidad(t, &data[14]));
     avl_tree_delete(t, &data[5]);
     avl_tree_delete(t, &data[7]);
+    AVL new_t = avl_tree_copy(t);
 
-    avl_tree_bfs(t, visitante);
 
     avl_tree_destroy(t->raiz, destr);
+    avl_tree_destroy(new_t->raiz, destr);
 
     free(t);
+    free(new_t);
 
     return 0;
 }

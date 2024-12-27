@@ -6,8 +6,10 @@ typedef void (*FuncionVisitante) (void *dato);
 struct _BHeap {
     void **arr;
     int capacidad;
-    int ultimo;
+    int numElem;
     FuncionComparadora comp;
+    FuncionDestructora destr;
+    FuncionCopiadora copia;
 };
 
 typedef struct _BHeap *BHeap;

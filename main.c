@@ -4,6 +4,7 @@
 #include "lists/linked_list.h"
 #include "trees/avl_tree.h"
 #include "queue/queue.h"
+#include "heap/bheap.h"
 
 //gcc trees/avl_tree.c queue/queue.c lists/linked_list.c hash_table/hash_table.c hash_table/avl_tree_table.c hash_table/linked_list_table.c main.c -o main
 
@@ -43,22 +44,17 @@ int main() {
 
     double data[] = { 2.2, 0.6, 2.9, 0.8, 0.1, 66.7, 1051.45, 1793.4, 17.6, 470.45, 5.6, 4.4, 20.6, 19.3, 14.2 };
 
-    AVL t = new_avl_tree(comp, copia, destr, visitante);
+    BHeap bheap = bheap_crear(10, comp, destr, copia);
 
     for (int i = 0; i < 15; i++) {
-        avl_tree_insert(t, &data[i], copia, comp);
+        bheap_insertar(bheap, &data[i]);
     }
-    printf("profundidad del nodo 14.2: %d\n", avl_tree_profundidad(t, &data[14]));
-    avl_tree_delete(t, &data[5]);
-    avl_tree_delete(t, &data[7]);
-    AVL new_t = avl_tree_copy(t);
 
+    bheap_eliminar(bheap);
 
-    avl_tree_destroy(t->raiz, destr);
-    avl_tree_destroy(new_t->raiz, destr);
+    bheap_recorrer(bheap, visitante);
 
-    free(t);
-    free(new_t);
+    bheap_destruir(bheap);
 
     return 0;
 }

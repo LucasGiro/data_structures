@@ -47,7 +47,7 @@ int main() {
 
     srand(time(NULL));
 
-    int cantidad = 1000000; float rango_min = 0; float rango_max = 500000000;
+    int cantidad = 10; float rango_min = 0; float rango_max = 5000;
 
     void **arr = malloc(sizeof(void*) * cantidad);
 
@@ -59,6 +59,10 @@ int main() {
     }
 
     heapsort(arr, cantidad, comp);
+
+    for (int i = 0; i < cantidad; i++) {
+        visitante(arr[i]);
+    }
 
     for (int i = 0; i < cantidad; i++) {
         free(arr[i]);

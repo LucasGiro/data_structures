@@ -20,3 +20,5 @@ int bheap_es_vacio(BHeap bheap);
 void bheap_recorrer(BHeap bheap, FuncionVisitante visit);
 void bheap_insertar(BHeap bheap, void *dato);
 void bheap_eliminar(BHeap bheap);
+void bheap_crear_desde_arr(void **arr, int largo, FuncionComparadora comp);
+void heapsort(void **arr, int largo, FuncionComparadora comp);

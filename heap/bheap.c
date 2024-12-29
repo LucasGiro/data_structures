@@ -112,3 +112,69 @@ void bheap_eliminar(BHeap bheap) {
 
 }
 
+void bheap_crear_desde_arr(void **arr, int largo, FuncionComparadora comp) {
+
+    for (int i = padre_nodo_k(largo-1); i >= 0; i--) {
+
+        // Hago undir el elemento
+
+        int k = i;
+        int max_pos = k;
+        int posicion_encontrada = 0;
+
+        while (!posicion_encontrada) {
+
+            if (hijo_izq_nodo_k(k) < largo && comp(arr[k], arr[hijo_izq_nodo_k(k)]) < 0) max_pos = hijo_izq_nodo_k(k);
+
+            if (hijo_der_nodo_k(k) < largo && comp(arr[max_pos], arr[hijo_der_nodo_k(k)]) < 0) max_pos = hijo_der_nodo_k(k);
+
+            if (max_pos == k) posicion_encontrada = 1;
+
+            void *temp = arr[max_pos];
+            arr[max_pos] = arr[k];
+            arr[k] = temp;
+
+            k = max_pos;
+
+        }   
+
+    }
+
+}
+
+void heapsort(void **arr, int largo, FuncionComparadora comp) {
+
+    bheap_crear_desde_arr(arr, largo, comp);
+
+    for (int i = largo-1; i > 0; i--) {
+
+        void *temp = arr[i];
+        arr[i] = arr[0];
+        arr[0] = temp;
+
+        // Hago undir el elemento
+
+        int k = 0;
+        int max_pos = 0;
+        int posicion_encontrada = 0;
+
+        while (!posicion_encontrada) {
+
+            if (hijo_izq_nodo_k(k) < i && comp(arr[k], arr[hijo_izq_nodo_k(k)]) < 0) max_pos = hijo_izq_nodo_k(k);
+
+            if (hijo_der_nodo_k(k) < i && comp(arr[max_pos], arr[hijo_der_nodo_k(k)]) < 0) max_pos = hijo_der_nodo_k(k);
+
+            if (max_pos == k) posicion_encontrada = 1;
+
+            void *temp = arr[max_pos];
+            arr[max_pos] = arr[k];
+            arr[k] = temp;
+
+            k = max_pos;
+
+        }
+
+    }
+
+}
+

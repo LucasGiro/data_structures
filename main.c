@@ -10,8 +10,8 @@
 //gcc trees/avl_tree.c queue/queue.c lists/linked_list.c hash_table/hash_table.c hash_table/avl_tree_table.c hash_table/linked_list_table.c main.c -o main
 
 void *copia(void *n) {
-    double *m = malloc(sizeof(double));
-    *m = *(double*)n;
+    float *m = malloc(sizeof(float));
+    *m = *(float*)n;
 }
 
 int comp(void *dato1, void *dato2) {
@@ -24,14 +24,14 @@ int comp(void *dato1, void *dato2) {
 }
 
 void destr(void *dato) {
-    free((double*)dato);
+    free((float*)dato);
 }
 
 unsigned hash(void *dato) {
 
-    unsigned truncado = *(double*)dato;
+    unsigned truncado = *(float*)dato;
 
-    if ((*(double*)dato - .5) >= truncado) return truncado + 1;
+    if ((*(float*)dato - .5) >= truncado) return truncado + 1;
 
     return truncado;
 
@@ -43,33 +43,22 @@ void visitante(void *dato) {
 
 int main() {
 
-    //double data[] = { 2.2, 0.6, 2.9, 0.8, 0.1, 66.7, 1051.45, 1793.4, 17.6, 470.45, 5.6, 4.4, 20.6, 19.3, 14.2 };
+    float data[] = { 2.2, 0.6, 2.9, 0.8, 0.1, 66.7, 1051.45, 1793.4, 17.6, 470.45, 5.6, 4.4, 20.6, 19.3, 14.2 };
 
-    srand(time(NULL));
+    AVL t = new_avl_tree(comp, copia, destr, visitante);
 
-    int cantidad = 10; float rango_min = 0; float rango_max = 5000;
-
-    void **arr = malloc(sizeof(void*) * cantidad);
-
-    for (int i = 0; i < cantidad; i++) {
-        float aleatorio = rango_min + (float)rand() / RAND_MAX * (rango_max - rango_min);
-        float *n = malloc(sizeof(float));
-        *n = aleatorio;
-        arr[i] = n;
+    for (int i = 0; i < 15; i++) {
+        avl_tree_insert(t, &data[i]);
     }
 
-    heapsort(arr, cantidad, comp);
-
-    for (int i = 0; i < cantidad; i++) {
-        visitante(arr[i]);
+    for (int i = 1; i < 16; i++) {
+        float *menor = avl_tree_k_esimo_menor(t, i);
+        printf("2-er menor: %f\n", *(float*)menor);
     }
 
-    for (int i = 0; i < cantidad; i++) {
-        free(arr[i]);
-    }
+    avl_tree_destroy(t->raiz, destr);
 
-
-    free(arr);
+    free(t);
 
     return 0;
 }

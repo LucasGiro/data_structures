@@ -126,8 +126,8 @@ static AVL_NODE *avl_node_insert(AVL_NODE *t, void *dato, FuncionCopiadora copia
     
 }
 
-void avl_tree_insert(AVL t, void *dato, FuncionCopiadora copia, FuncionComparadora comp) {
-    t->raiz = avl_node_insert(t->raiz, dato, copia, comp);
+void avl_tree_insert(AVL t, void *dato) {
+    t->raiz = avl_node_insert(t->raiz, dato, t->copia, t->comp);
 }
 
 void avl_tree_preorder(AVL_NODE *t, FuncionVisitante visit) {
@@ -425,4 +425,63 @@ int avl_node_profundidad(AVL_NODE *t, void *dato, FuncionComparadora comp) {
 
 int avl_tree_profundidad(AVL t, void *dato) {
     return avl_node_profundidad(t->raiz, dato, t->comp);
+}
+
+void *k_esimo_menor_impl(AVL_NODE *t, int *k) {
+
+    if (t->izq == NULL) {
+
+        if (*k == 1) return t->dato;
+
+        *k = *k - 1;
+
+        if (t->der != NULL) return k_esimo_menor_impl(t->der, k);
+
+        *k = *k + 1;
+
+        return t->dato;
+
+    }
+
+    void *menor = k_esimo_menor_impl(t->izq, k);
+    
+    if (*k == 1) return menor;
+
+    *k = *k - 1;
+
+    if (*k == 1) return t->dato;
+
+    *k = *k - 1;
+
+    if (t->der == NULL) {
+        *k = *k + 1;
+        return t->dato; 
+    }
+
+    menor = k_esimo_menor_impl(t->der, k);
+
+    return menor;
+
+}
+
+void *k_esimo_menor_impl_v2(AVL_NODE *t, int *k) {
+
+    if (t == NULL) return NULL;
+
+    void *menor = k_esimo_menor_impl_v2(t->izq, k);
+
+    if (menor != NULL) return menor;
+
+    *k = *k - 1;
+
+    if (*k == 0) return t->dato;
+
+    return k_esimo_menor_impl_v2(t->der, k);
+
+}
+
+void *avl_tree_k_esimo_menor(AVL t, int k) {
+    if (t == NULL) return NULL;
+    int copia_k = k;
+    return k_esimo_menor_impl(t->raiz, &copia_k);
 }

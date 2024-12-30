@@ -22,7 +22,7 @@ struct _AVL {
 typedef struct _AVL *AVL;
 
 AVL new_avl_tree(FuncionComparadora comp, FuncionCopiadora copia, FuncionDestructora destr, FuncionVisitante visit);
-void avl_tree_insert(AVL t, void *dato, FuncionCopiadora copia, FuncionComparadora comp);
+void avl_tree_insert(AVL t, void *dato);
 void avl_tree_preorder(AVL_NODE *t, FuncionVisitante visit);
 void avl_tree_inorder(AVL_NODE *t, FuncionVisitante visit);
 void avl_tree_postorder(AVL_NODE *t, FuncionVisitante visit);
@@ -34,3 +34,4 @@ int avl_tree_search(AVL t, void *dato);
 AVL avl_tree_copy(AVL t);
 int avl_nnodos_profundidad(AVL_NODE *t, int k);
 int avl_tree_profundidad(AVL t, void *dato);
+void *avl_tree_k_esimo_menor(AVL t, int k);
